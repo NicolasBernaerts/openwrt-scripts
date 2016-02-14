@@ -1,6 +1,6 @@
 openwrt-scripts
 ==============
 
-Various scripts for DNS-323 running funplug 0.7.
+Various scripts for devices running OpenWRT.
 
 All installation informations are available from http://bernaerts.dyndns.org/nas
