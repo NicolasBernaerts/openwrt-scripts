@@ -1,0 +1,33 @@
+#!/bin/sh /etc/rc.common
+# Ser2Net startup script
+# Copyright (C) 2016 Nicolas Bernaerts
+
+# start and stop order
+START=95
+STOP=50
+USE_PROCD=1
+
+start_service() {
+  echo "start ser2net service"
+
+  # commands to launch service
+  ser2net -c /etc/ser2net.conf
+}
+
+stop_service() {
+  echo "stop ser2net service"
+
+  # read device from /etc/ser2net.conf
+  DEVICE=$(cat /etc/ser2net.conf | grep ttyUSB | cut -d':' -f4 | cut -d'/' -f3)
+
+  # remove device lock file
+  echo " - remove lock for $DEVICE"
+  rm "/var/lock/LCK..$DEVICE"
+
+  # get ser2net process ID
+  PID=$(ps | grep -v "grep" | grep "ser2net" | xargs | cut -d' ' -f1)
+
+  # kill ser2net process
+  echo " - kill process $PID"
+  kill $PID
+}
