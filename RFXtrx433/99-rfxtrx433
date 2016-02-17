@@ -1,0 +1,66 @@
+#!/bin/sh
+
+# RFXtrx433E Vendor and Device ID
+RFXTRX_VENDOR_ID="403"
+RFXTRX_DEVICE_ID="6001"
+
+# configuration
+SYMLINK="ttyRFXtrx433"
+CONFIG="/etc/ser2net-rfxtrx.conf"
+
+# read product vendor and device ID
+PRODUCT_VENDOR_ID=$(echo $PRODUCT | cut -d'/' -f1)
+PRODUCT_DEVICE_ID=$(echo $PRODUCT | cut -d'/' -f2)
+
+# if device is a RFXtrx433E
+if [ "$PRODUCT_VENDOR_ID" = "$RFXTRX_VENDOR_ID" -a "$PRODUCT_VENDOR_ID" = "$RFXTRX_VENDOR_ID" -a "$INTERFACE" != "" ]
+then
+
+  # get USB port
+  USB_PORT=$(echo $DEVICENAME | cut -d':' -f1)
+
+  # get TTY device
+  USB_TTY=$(ls /sys/$DEVPATH | grep tty)
+
+  # deal according to insertion or removal
+  case "$ACTION" in
+
+    # connexion
+    add)
+      # get TTY device
+      USB_TTY=$(ls /sys/$DEVPATH | grep tty)
+ 
+      # log detection
+      logger "RFXtrx433 : Insertion on USB port $USB_PORT, connection on /dev/$USB_TTY"
+
+      # create symlink to newly created TTY
+      ln -s /dev/$USB_TTY /dev/$SYMLINK
+
+      # commands to launch service
+      ser2net -c /etc/ser2net-rfxtrx.conf
+
+      # log service start
+      logger "RFXtrx433 : Symlink created for /dev/$USB_TTY and ser2net service started"
+      ;;
+
+    # removal
+    remove)
+      # remove device lock file
+      rm -f "/var/lock/LCK..$SYMLINK"
+ 
+      # get ser2net process ID
+      PID=$(ps | grep -v "grep" | grep "/etc/ser2net-rfxtrx.conf" | xargs | cut -d' ' -f1)
+ 
+      # kill ser2net process
+      kill $PID
+
+      # remove symlink
+      rm -f /dev/$SYMLINK
+
+      # log service stop
+      logger "RFXtrx433 : Service ser2net stopped and symlink /dev/$SYMLINK removed"
+      ;;
+
+  esac
+
+fi
