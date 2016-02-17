@@ -1,0 +1,7 @@
+# Put your custom commands here that should be executed once
+# the system init finished. By default this file does nothing.
+
+# force USB devices detection at boot (procd bug)
+echo "1" > /sys/bus/usb/devices/usb1/bConfigurationValue
+
+exit 0
