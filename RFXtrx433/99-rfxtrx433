@@ -6,7 +6,7 @@ RFXTRX_DEVICE_ID="6001"
 
 # configuration
 SYMLINK="ttyRFXtrx433"
-CONFIG="/etc/ser2net-rfxtrx.conf"
+CONFIG="/etc/rfxtrx433.conf"
 
 # read product vendor and device ID
 PRODUCT_VENDOR_ID=$(echo $PRODUCT | cut -d'/' -f1)
@@ -37,7 +37,7 @@ then
       ln -s /dev/$USB_TTY /dev/$SYMLINK
 
       # commands to launch service
-      ser2net -c /etc/ser2net-rfxtrx.conf
+      ser2net -c $CONFIG
 
       # log service start
       logger "RFXtrx433 : Symlink created for /dev/$USB_TTY and ser2net service started"
@@ -49,7 +49,7 @@ then
       rm -f "/var/lock/LCK..$SYMLINK"
  
       # get ser2net process ID
-      PID=$(ps | grep -v "grep" | grep "/etc/ser2net-rfxtrx.conf" | xargs | cut -d' ' -f1)
+      PID=$(ps | grep -v "grep" | grep "$CONFIG" | xargs | cut -d' ' -f1)
  
       # kill ser2net process
       kill $PID
