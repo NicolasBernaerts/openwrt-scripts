@@ -1,5 +1,6 @@
 #!/bin/sh
-# /etc/hotplug.d/USB/99-rfxtrx433
+# /etc/hotplug.d/usb/99-rfxtrx433
+# hotplug script called for RFXtrx433E USB Transceiver
 
 # RFXtrx433E Vendor and Device ID
 RFXTRX_VENDOR_ID="403"
