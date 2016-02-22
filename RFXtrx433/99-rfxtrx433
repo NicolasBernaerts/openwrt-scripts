@@ -1,4 +1,5 @@
 #!/bin/sh
+# /etc/hotplug.d/USB/99-rfxtrx433
 
 # RFXtrx433E Vendor and Device ID
 RFXTRX_VENDOR_ID="403"
