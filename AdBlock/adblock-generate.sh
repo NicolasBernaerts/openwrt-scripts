@@ -28,5 +28,9 @@ wget -q -O - --no-check-certificate "$URL_LIST" >> "$TMP_LIST"
 # concatenate, sort, deduplicate and format final list that is used by DNSMasq
 grep -v "#" "$TMP_LIST" | grep -v "^localhost" | grep -v "^127.0.0.1"| sort | uniq | sed "s/\(.*\)$/"$IP_ADDR"\t\1/" > "$FINAL_LIST"
 
+# display result
+NBR_SITE=$(wc -l "$FINAL_LIST" | cut -d' ' -f1)
+echo "$NBR_SITE sites will now be blocked"
+
 # restart DNSMasq
 /etc/init.d/dnsmasq restart
