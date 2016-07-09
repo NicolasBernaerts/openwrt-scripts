@@ -36,4 +36,5 @@ NBR_SITE=$(wc -l "$FINAL_LIST" | cut -d' ' -f1)
 echo "$NBR_SITE sites will now be blocked"
 
 # restart DNSMasq
+echo "Restarting DNSMasq"
 /etc/init.d/dnsmasq restart
