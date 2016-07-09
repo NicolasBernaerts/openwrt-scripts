@@ -5,7 +5,7 @@
 # 2016/07/09 - Version 1.0
 
 # set your own private list URL
-URL_LIST="https://raw.githubusercontent.com/NicolasBernaerts/openwrt-scripts/master/AdBlock/blacklist.list"
+URL_LIST="https://raw.githubusercontent.com/NicolasBernaerts/openwrt-scripts/master/AdBlock/adblock-blacklist.list"
 
 # destination file
 FINAL_LIST="/etc/dnsmasq/adblock.hosts"
