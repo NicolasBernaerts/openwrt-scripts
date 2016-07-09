@@ -7,6 +7,9 @@
 # set your own private list URL
 URL_LIST="https://raw.githubusercontent.com/NicolasBernaerts/openwrt-scripts/master/AdBlock/blacklist.list"
 
+# destination file
+FINAL_LIST="/etc/dnsmasq/adblock.hosts"
+
 # set temporary file
 TMP_LIST="/tmp/adblock.list"
 
@@ -23,7 +26,7 @@ wget -q -O - --no-check-certificate https://hosts-file.net/ad_servers.txt | grep
 wget -q -O - --no-check-certificate "$URL_LIST" >> "$TMP_LIST"
 
 # concatenate, sort, deduplicate and format final list that is used by DNSMasq
-grep -v "#" "$TMP_LIST" | grep -v "^localhost" | grep -v "^127.0.0.1"| sort | uniq | sed "s/\(.*\)$/"$IP_ADDR"\t\1/" > /etc/dnsmasq/adblock.hosts
+grep -v "#" "$TMP_LIST" | grep -v "^localhost" | grep -v "^127.0.0.1"| sort | uniq | sed "s/\(.*\)$/"$IP_ADDR"\t\1/" > "$FINAL_LIST"
 
 # restart DNSMasq
 /etc/init.d/dnsmasq restart
