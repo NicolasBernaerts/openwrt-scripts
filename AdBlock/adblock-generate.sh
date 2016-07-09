@@ -14,7 +14,7 @@ FINAL_LIST="/etc/dnsmasq/adblock.hosts"
 TMP_LIST="/tmp/adblock.list"
 
 # get current IP adress
-IP_ADDR=$(ifconfig  | grep 'inet addr:'| grep -v '127.0.0.1' | cut -d: -f2 | cut -d' ' -f1)
+IP_ADDR=$(ifconfig  | grep 'inet addr:' | grep -v '127.0.0.1' | cut -d: -f2 | cut -d' ' -f1 | head -n 1)
 
 # retrieve public lists
 wget -q -O - http://www.mvps.org/winhelp2002/hosts.txt | grep "0.0.0.0" | sed "s/0.0.0.0[ ]*//" | sed "s/.$//" > "$TMP_LIST"
