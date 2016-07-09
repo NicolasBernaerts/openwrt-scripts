@@ -12,7 +12,7 @@ echo "# enable AdBlock list" >> /etc/dnsmasq.conf
 echo "addn-hosts=/etc/dnsmasq/adblock.hosts" >> /etc/dnsmasq.conf
 
 # create directory for lists
-mkdir --parents /etc/dnsmasq
+mkdir -p /etc/dnsmasq
 
 # install AdBlock list generation script
 wget -q -O /usr/bin/adblock-generate.sh --no-check-certificate "https://raw.githubusercontent.com/NicolasBernaerts/openwrt-scripts/master/AdBlock/adblock-generate.sh"
