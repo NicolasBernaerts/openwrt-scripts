@@ -20,3 +20,7 @@ chmod +x /usr/bin/adblock-generate.sh
 
 # generate AdBlock list
 /usr/bin/adblock-generate.sh
+
+# set LUCI 404 as 1x1 pixel
+uci set uhttpd.main.error_page='/1x1.png'
+uci commit uhttpd
