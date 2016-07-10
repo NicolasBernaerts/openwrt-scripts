@@ -1,0 +1,8 @@
+
+config uhttpd 'adaway'
+	list listen_http '0.0.0.0:80'
+	list listen_http '[::]:80'
+	option home '/www-adaway'
+	option error_page '/index.html'
+	option index_file 'index.html'
+	option index_page 'index.html'
