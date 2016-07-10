@@ -25,3 +25,7 @@ chmod +x /usr/bin/adblock-generate.sh
 wget -q -O /www/1x1.png --no-check-certificate "https://raw.githubusercontent.com/NicolasBernaerts/openwrt-scripts/master/AdBlock/1x1.png"
 uci set uhttpd.main.error_page='/1x1.png'
 uci commit uhttpd
+
+# restart dnsmasq and uhttpd
+/etc/init.d/dnsmasq restart
+/etc/init.d/uhttpd restart
