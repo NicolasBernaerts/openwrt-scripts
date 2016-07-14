@@ -1,8 +1,9 @@
 #!/bin/sh
 #
-# Generate AdBlock list from public and private lists
+# Generate AdAway list from public lists
 #
 # 2016/07/09 - Version 1.0
+# 2016/07/14 - Version 1.1, Complete rewrite
 
 # destination file
 ADAWAY_DOMAIN="/etc/adaway-domain.conf"
@@ -20,7 +21,7 @@ IP_ADDR=$(ifconfig  | grep 'inet addr:' | grep -v '127.0.0.1' | cut -d: -f2 | cu
 
 # fanboy easylist
 echo "Retrieving fanboy easylist domain list"
-wget -q -O - https://secure.fanboy.co.nz/easylist.txt | grep "^||" | grep -v "[/$\*=]" | sed "s/||\(.*\)^/\1/" > "${TMP_FILE}"
+wget -q -O - --no-check-certificate https://secure.fanboy.co.nz/easylist.txt | grep "^||" | grep -v "[/$\*=]" | sed "s/||\(.*\)^/\1/" > "${TMP_FILE}"
 
 # concatenate, sort, deduplicate and format final domain list that is used by DNSMasq
 echo "Generating final domains list"
@@ -32,7 +33,7 @@ sort "${TMP_FILE}" | uniq | sed "s/\(.*\)$/server=\/\1\/${IP_ADDR}/" > "${ADAWAY
 
 # adaway list
 echo "Retrieving adaway host list"
-wget -q -O - https://adaway.org/hosts.txt | grep -v "^#"  | grep -v "localhost" | cut -d' ' -f2 > "${TMP_FILE}"
+wget -q -O - "http://adaway.org/hosts.txt" | grep -v "^#"  | grep -v "localhost" | cut -d' ' -f2 > "${TMP_FILE}"
 
 # winhelp2002 list
 echo "Retrieving winhelp2002 host list"
@@ -40,7 +41,7 @@ wget -q -O - "http://winhelp2002.mvps.org/hosts.txt" | grep -v "^#" | cut -d' ' 
 
 # hosts-file.net list
 echo "Retrieving hosts-file.net host list"
-wget -q -O - "https://hosts-file.net/ad_servers.txt" | sed "s/^[0-9\.]*[^0-9a-z]*\(.*\)$/\1/" >> "${TMP_FILE}"
+wget -q -O - --no-check-certificate "https://hosts-file.net/ad_servers.txt" | sed "s/^[0-9\.]*[^0-9a-z]*\(.*\)$/\1/" >> "${TMP_FILE}"
 
 # concatenate, sort, deduplicate and format final hosts list that is used by DNSMasq
 echo "Generating final hosts list"
