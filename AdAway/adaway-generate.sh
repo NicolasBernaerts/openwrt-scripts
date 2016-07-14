@@ -24,7 +24,7 @@ wget -q -O - https://secure.fanboy.co.nz/easylist.txt | grep "^||" | grep -v "[/
 
 # concatenate, sort, deduplicate and format final domain list that is used by DNSMasq
 echo "Generating final domains list"
-sort "${TMP_FILE}" uniq | sed "s/\(.*\)$/server=\/\1\/${IP_ADDR}/" > "${ADAWAY_DOMAIN}"
+sort "${TMP_FILE}" | uniq | sed "s/\(.*\)$/server=\/\1\/${IP_ADDR}/" > "${ADAWAY_DOMAIN}"
 
 # ------------
 #  HOST LISTS 
