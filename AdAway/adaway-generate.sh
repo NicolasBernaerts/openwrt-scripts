@@ -56,6 +56,6 @@ echo "Restarting DNSMasq"
 
 # display result
 NBR_DOMAIN=$(wc -l "${ADAWAY_DOMAIN}" | cut -d' ' -f1)
-echo "$NBR_DOMAIN hosts will now be blocked"
+echo "$NBR_DOMAIN domains will now be blocked"
 NBR_HOST=$(wc -l "${ADAWAY_BLACKLIST}" | cut -d' ' -f1)
 echo "$NBR_HOST hosts will now be blocked"
