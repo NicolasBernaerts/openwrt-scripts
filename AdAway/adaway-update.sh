@@ -22,6 +22,7 @@ IP_ADDR=$(ifconfig  | grep 'inet addr:' | grep -v '127.0.0.1' | cut -d: -f2 | cu
 # --------------
 
 # DNSMasq
+# if not done, add adaway.conf to dnsmasq.conf
 IS_INSTALLED=$(grep "adaway.conf" /etc/dnsmasq.conf)
 if [ "${IS_INSTALLED}" = "" ]
 then
@@ -37,6 +38,7 @@ then
 fi
 
 # uhttpd
+# if not done, change LUCI default ports and add adaway one pixel site
 IS_INSTALLED=$(grep "adaway" /etc/config/uhttpd)
 if [ "${IS_INSTALLED}" = "" ]
 then
@@ -55,7 +57,7 @@ then
 
   # create and populate adaway site root
   echo "Create and populate adaway web site root"
-  mkdir /www-adaway
+  mkdir -p /www-adaway
   wget -q -O /www-adaway/image.png --no-check-certificate "https://raw.githubusercontent.com/NicolasBernaerts/openwrt-scripts/master/AdAway/image.png"
   wget -q -O /www-adaway/index.html --no-check-certificate "https://raw.githubusercontent.com/NicolasBernaerts/openwrt-scripts/master/AdAway/index.html"
 
@@ -101,10 +103,8 @@ wget -q -O - --no-check-certificate "https://secure.fanboy.co.nz/easylist.txt" |
 # loop thru domains to remove hosts from these domains
 echo "Remove hosts from blacklisted domains"
 while read DOMAIN; do
-  # remove any non ascii char
-  DOMAIN=$(echo ${DOMAIN} | xargs)
-
   # display current domain
+  DOMAIN=$(echo ${DOMAIN} | xargs)
   echo "  - ${DOMAIN}"
 
   # remove hosts from this domain
@@ -114,7 +114,7 @@ while read DOMAIN; do
 done < ${TMP_DOMAIN}
 
 # concatenate, sort, deduplicate and format final hosts list that is used by DNSMasq
-echo "Generate final hosts list"
+echo "Generate final hosts list (sort, deduplicate and format"
 sed "s/\r//g" ${TMP_HOST} | sed "/^$/d" | sort | uniq | sed "s/\(.*\)$/"${IP_ADDR}"\t\1/" > "${ADAWAY_BLACKLIST}"
 
 # --------
