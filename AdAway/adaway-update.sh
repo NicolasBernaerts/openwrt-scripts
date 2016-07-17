@@ -108,7 +108,7 @@ while read DOMAIN; do
   echo "  - ${DOMAIN}"
 
   # remove hosts from this domain
-  sed "/${DOMAIN}/d" ${TMP_HOST} > ${TMP_FILE}
+  grep -v "${DOMAIN}" ${TMP_HOST} > ${TMP_FILE}
   rm ${TMP_HOST}
   mv ${TMP_FILE} ${TMP_HOST}
 done < ${TMP_DOMAIN}
