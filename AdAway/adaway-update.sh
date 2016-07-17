@@ -84,19 +84,19 @@ echo "Retrieve adaway hosts blacklist"
 
 # adaway list
 echo "  * https://adaway.org/hosts.txt"
-wget -q -O - --no-check-certificate "https://adaway.org/hosts.txt" | grep -v "^#"  | grep -v "localhost" | cut -d' ' -f2 > "${TMP_HOST}"
+wget -q -O - --no-check-certificate "https://adaway.org/hosts.txt" | sed "s/\r//" | grep -v "^#"  | grep -v "localhost" | cut -d' ' -f2 > "${TMP_HOST}"
 
 # winhelp2002 list
 echo "  * http://winhelp2002.mvps.org/hosts.txt"
-wget -q -O - "http://winhelp2002.mvps.org/hosts.txt" | grep -v "^#" | cut -d' ' -f2 >> "${TMP_HOST}"
+wget -q -O - "http://winhelp2002.mvps.org/hosts.txt" | sed "s/\r//" | grep -v "^#" | cut -d' ' -f2 >> "${TMP_HOST}"
 
 # hosts-file.net list
 echo "  * https://hosts-file.net/ad_servers.txt"
-wget -q -O - --no-check-certificate "https://hosts-file.net/ad_servers.txt" | sed "s/^[0-9\.]*[^0-9a-z]*\(.*\)$/\1/" >> "${TMP_HOST}"
+wget -q -O - --no-check-certificate "https://hosts-file.net/ad_servers.txt" | sed "s/\r//" | sed "s/^[0-9\.]*[^0-9a-z]*\(.*\)$/\1/" >> "${TMP_HOST}"
 
 # fanboy easylist
 echo "  * https://secure.fanboy.co.nz/easylist.txt"
-wget -q -O - --no-check-certificate "https://secure.fanboy.co.nz/easylist.txt" | grep "^||" | grep -v "[/$\*=]" | sed "s/||\(.*\)^/\1/" >> "${TMP_HOST}"
+wget -q -O - --no-check-certificate "https://secure.fanboy.co.nz/easylist.txt" | sed "s/\r//" | grep "^||" | grep -v "[/$\*=]" | sed "s/||\(.*\)^/\1/" >> "${TMP_HOST}"
 
 # loop thru domains to remove hosts from these domains
 echo "Remove hosts from blacklisted domains"
@@ -108,7 +108,7 @@ while read DOMAIN; do
   echo "  - ${DOMAIN}"
 
   # remove hosts from this domain
-  grep -v "${DOMAIN}" ${TMP_HOST} > ${TMP_FILE}
+  grep -v "${DOMAIN}$" ${TMP_HOST} > ${TMP_FILE}
   rm ${TMP_HOST}
   mv ${TMP_FILE} ${TMP_HOST}
 done < ${TMP_DOMAIN}
